@@ -32,11 +32,6 @@ def readXlfile(filePath,sheetName):
     result.data = data
     return result
 
-def preprocessXlData():
-    
-    result = holder()
-
-    return result
 
 
 def getColumn(i):
@@ -52,7 +47,7 @@ def checkNull(i,rs):
         #print(indices)
         print('Column', rs.varNames[i],'contains',round(len(indices)*100/len(column),4), '% of missing values with indices',indices)
     else:
-        print('Column', i, 'does not contain missing values')
+        print('Column', rs.varNames[i], 'does not contain missing values')
 #
         
 def checkOutliers(i,rs):
@@ -61,12 +56,12 @@ def checkOutliers(i,rs):
     datamean = get_mean(column)
     datastd = get_StandardDeviation(column)
         
-    indices = [j for j,x in enumerate(column) if ((datamean + 3*datastd )<= x<= (datamean - 3 * datastd))]
+    indices = [j for j,x in enumerate(column) if ((datamean + 3*datastd )<= x or x <= (datamean - 3 * datastd))]
     if indices:
         #print(indices)
         print('Column', rs.varNames[i],'contains',round(len(indices)*100/len(column),4), '% of outliers with indices',indices)
     else:
-        print('Column', i, 'does not contain outliers')
+        print('Column', rs.varNames[i], 'does not contain outliers')
         
 def checkInputDatatypes(i,rs):
     
@@ -93,7 +88,7 @@ def checkInputDatatypes(i,rs):
             #print(indices)
             print('Column', rs.varNames[i],'contains',round(len(indices)*100/len(column),4), '% of non integers with indices',indices)
         else:
-            print('Column', i, 'does not contain non integers')
+            print('Column', rs.varNames[i], 'does not contain non integers')
     elif dataType == 'float':
         if column.dtype != 'float64':          
             indices =[]
@@ -104,14 +99,14 @@ def checkInputDatatypes(i,rs):
                 #print(indices)
                 print('Column', rs.varNames[i],'contains',round(len(indices)*100/len(column),4), '% of non floats with indices',indices)
             else:
-                print('Column', i, 'does not contain non floats')
+                print('Column', rs.varNames[i], 'does not contain non floats')
     elif dataType == 'str':           
         indices = [j for j,x in enumerate(column) if x.replace('.','',1).isdigit()]
         if indices:
             #print(indices)
             print('Column', rs.varNames[i], 'contains',round(len(indices)*100/len(column),4), '% of non strings with indices',indices)
         else:
-            print('Column', i, 'does not contain non strings')
+            print('Column', rs.varNames[i], 'does not contain non strings')
 
             
 def zscoreNormalize(i,rs):
